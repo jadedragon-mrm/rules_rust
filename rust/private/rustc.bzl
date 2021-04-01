@@ -471,6 +471,8 @@ def construct_arguments(
         if toolchain.target_arch != "wasm32":
             rpaths = _compute_rpaths(toolchain, output_dir, dep_info)
             ld, link_args, link_env = get_linker_and_args(ctx, cc_toolchain, feature_configuration, rpaths)
+            link_args = list(link_args)
+            link_args.remove("-lstdc++")
             env.update(link_env)
             args.add("--codegen=linker=" + ld)
             args.add_joined("--codegen", link_args, join_with = " ", format_joined = "link-args=%s")
